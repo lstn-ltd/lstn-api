@@ -1,0 +1,105 @@
+FORMAT: 1A
+HOST: http://api.lstn.ltd/
+
+# Lstn
+
+Lstn provides audio representations of web content. Here's a typical API flow:
+
+- client requests a content item by providing an `id` and `publisher` token
+- backend responds with `HTTP 202` 
+
+*meanwhile...*
+
+- backend fetches full text and metadata of the source (via direct publisher connection, or scraping)
+- backend generates an audio representation of the content (via Watson or similar)
+- backend transcodes the audio representation as needed (eg. to HLS for iOS)
+- backend stores the audio file(s) on a CDN
+
+*later...*
+
+- client requests the content item again
+- backend responds immediately with the content item and its audio representation(s)
+
+A publisher needs to register with Lstn to obtain a `publisher` token. At this time the token doubles as their authentication key, and it is assumed a publisher only requests their own articles.
+
+## Content [/content/{?id}{?publisher}]
+
++ Parameters
+
+    + id: `96bd704-a-news-article` (string) - The publisher-chosen identifier for the content item.
+    + publisher: 9a7a52a3e8efc2baa12ba2f76bb0e87eccbe26b1 (string) - The Lstn-chosen identifier for the content item's publisher.
+
+### Retrieve Content [GET]
+
++ Response 200 (application/json)
+
+    Returned when an audio representation is available.
+    
+    Media may relate to a specific part of the content, as noted by the `for` field. At this time the only supported value is `summary`.
+
+    + Body
+    
+            {
+                "url": "https://publisher.com/.../96bd704-a-news-article.html",
+                "title": "A News Article",
+                "author": "Jane Doe",
+                "summary": "Lorem ipsum dolor [...]",
+                "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
+                "published_at": "2016-11-01T11:05:57Z",
+                "media": [
+                    {
+                        "url": "https://cdn.lstn.ltd/.../96bd704-a-news-article.mp3",
+                        "type": "audio/mp3",
+                        "for": "summary"
+                    }
+                    {
+                        "url": "https://cdn.lstn.ltd/.../96bd704-a-news-article.m3u8",
+                        "type": "application/x-mpegurl",
+                        "for": "summary"
+                    }
+                ]
+            }
+
++ Response 202 (application/json)
+
+    Returned when an audio representation has not yet been generated. The client must try again later.
+    
+    + Body
+    
+            {
+                "code": 123,
+                "message": "The content is currently being processed"
+            }
+
++ Response 400 (application/json)
+
+    Returned when the publisher token is not known.
+    
+    + Body
+    
+            {
+                "code": 234,
+                "message": "The publisher was not recognised"
+            }
+            
++ Response 404 (application/json)
+
+    Returned when the content was not found.
+    
+    + Body
+    
+            {
+                "code": 345,
+                "message": "The content was not found"
+            }
+            
++ Response 500 (application/json)
+
+    Returned when an error occured.
+
+    + Body
+    
+            {
+                "code": 456,
+                "message": "The content could not be processed"
+            }
