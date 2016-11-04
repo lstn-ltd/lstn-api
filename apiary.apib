@@ -3,39 +3,44 @@ HOST: http://api.lstn.ltd/
 
 # Lstn
 
-Lstn provides audio representations of web content. Here's a typical API flow:
+Lstn provides audio representations of articles from the web. Here's a typical API flow:
 
-- client requests a content item by providing an `id` and `publisher` token
+- client requests an article by providing an article `id`
 - backend responds with `HTTP 202` 
 
 *meanwhile...*
 
-- backend fetches full text and metadata of the source (via direct publisher connection, or scraping)
-- backend generates an audio representation of the content (via Watson or similar)
+- backend fetches full text and metadata of the article (via direct publisher connection, or scraping)
+- backend generates an audio representation of the article (via Watson or similar)
 - backend transcodes the audio representation as needed (eg. to HLS for iOS)
 - backend stores the audio file(s) on a CDN
 
 *later...*
 
-- client requests the content item again
-- backend responds immediately with the content item and its audio representation(s)
+- client requests the article again
+- backend responds immediately with the article and its audio representation(s)
 
-A publisher needs to register with Lstn to obtain a `publisher` token. At this time the token doubles as their authentication key, and it is assumed a publisher only requests their own articles.
+A publisher needs to register with Lstn to obtain an authentication token. At this time at publisher can only fetch their own articles.
 
-## Content [/content/{?id}{?publisher}]
+## Articles [/articles/{?id}{?publisher}]
 
 + Parameters
 
-    + id: `96bd704-a-news-article` (string) - The publisher-chosen identifier for the content item.
-    + publisher: 9a7a52a3e8efc2baa12ba2f76bb0e87eccbe26b1 (string) - The Lstn-chosen identifier for the content item's publisher.
+    + id: `96bd704-a-news-article` (string) - The publisher-chosen identifier for the article.
 
-### Retrieve Content [GET]
+### Retrieve Article [GET]
+
+thd + Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer 9a7a52a3e8efc2baa12ba2f76bb0e87eccbe26b1
 
 + Response 200 (application/json)
 
     Returned when an audio representation is available.
     
-    Media may relate to a specific part of the content, as noted by the `role` field. At this time the only supported value is `summary`.
+    Media may relate to a specific part of the article, as noted by the `role` field. At this time the only supported value is `summary`.
 
     + Body
     
@@ -45,7 +50,7 @@ A publisher needs to register with Lstn to obtain a `publisher` token. At this t
                 "author": "Jane Doe",
                 "summary": "Lorem ipsum dolor [...]",
                 "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
-                "published_at": "2000-01-01T00x :00:000Z",
+                "published_at": "2000-01-01T00:00:000Z",
                 "media": [
                     {
                         "url": "https://cdn.lstn.ltd/.../96bd704-a-news-article.mp3",
@@ -68,12 +73,12 @@ A publisher needs to register with Lstn to obtain a `publisher` token. At this t
     
             {
                 "code": 123,
-                "message": "The content is currently being processed"
+                "message": "The article is being processed"
             }
 
 + Response 400 (application/json)
 
-    Returned when the publisher token is not known.
+    Returned when the authentication token is not known.
     
     + Body
     
@@ -84,13 +89,13 @@ A publisher needs to register with Lstn to obtain a `publisher` token. At this t
             
 + Response 404 (application/json)
 
-    Returned when the content was not found.
+    Returned when the article was not found.
     
     + Body
     
             {
                 "code": 345,
-                "message": "The content was not found"
+                "message": "The article was not found"
             }
             
 + Response 500 (application/json)
@@ -101,5 +106,5 @@ A publisher needs to register with Lstn to obtain a `publisher` token. At this t
     
             {
                 "code": 456,
-                "message": "The content could not be processed"
+                "message": "The article could not be processed"
             }
