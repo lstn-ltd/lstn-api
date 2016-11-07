@@ -46,7 +46,7 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     + Body
     
             {
-                "id": "96bd704-a-news-article.html",
+                "id": "96bd704-a-news-article",
                 "publisher_id": "the-publisher-id",
                 "url": "https://publisher.com/.../96bd704-a-news-article.html",
                 "title": "A News Article",
@@ -75,7 +75,7 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     + Body
     
             {
-                "code": 123,
+                "code": 10,
                 "message": "The article is being processed"
             }
 
@@ -86,7 +86,7 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     + Body
     
             {
-                "code": 234,
+                "code": 20,
                 "message": "The publisher was not recognised"
             }
             
@@ -97,7 +97,7 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     + Body
     
             {
-                "code": 345,
+                "code": 30
                 "message": "The article was not found"
             }
             
@@ -108,6 +108,37 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     + Body
     
             {
-                "code": 456,
+                "code": 40,
                 "message": "The article could not be processed"
             }
+
+## Demo App Articles [/demo/articles/{?limit}]
+
++ Parameters
+
+    + limit: 100 (number) - The number of recent articles to retrieve.
+ 
+### Retrieve Latest Articles [GET]
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer 9a7a52a3e8efc2baa12ba2f76bb0e87eccbe26b1
+
++ Response 200 (application/json)
+
+    + Body
+    
+            [
+                {
+                    "id": "12345",
+                    "publisher_id": "lstn",
+                    "url": "https://publisher.com/.../96bd704-a-news-article.html",
+                    "title": "A News Article",
+                    "author": "Jane Doe",
+                    "summary": "Lorem ipsum dolor [...]",
+                    "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
+                    "published_at": "2000-01-01T00:00:000Z"
+                }
+            ]
