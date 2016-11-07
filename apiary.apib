@@ -21,16 +21,17 @@ Lstn provides audio representations of articles from the web. Here's a typical A
 - backend responds immediately with the article and its audio representation(s)
 
 A publisher needs to register with Lstn to obtain an authentication token. At this time at publisher can only fetch their own articles.
-
-## Articles [/articles/{?id}]
+1
+## Articles [/publishers/{publisher}/articles/{article}]
 
 + Parameters
 
-    + id: `96bd704-a-news-article` (string) - The publisher-chosen identifier for the article.
+    + publisher: `the-guardian-uk` (string) - The Lstn-chosen publisher identifier.
+    + article: `96bd704-a-news-article` (string) - The publisher-chosen article identifier.
 
 ### Retrieve Article [GET]
 
-thd + Request (application/json)
++ Request (application/json)
 
     + Headers
     
