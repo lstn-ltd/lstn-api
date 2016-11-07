@@ -150,3 +150,32 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
                     ]
                 }
             ]
+
+## Content {Legacy} [/content/{?source}]
+
+This endpoint is just around while the SDK is migrated.
+
++ Parameters
+    + source: `the-guardian-uk` (string) - The News API source ID
+
+## Retrieve A Content Item [GET]
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "url": "https://publisher.com/.../96bd704-a-news-article.html",
+                "title": "A News Article",
+                "author": "Jane Doe",
+                "summary": "Lorem ipsum dolor [...]",
+                "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
+                "published_at": "2000-01-01T00:00:000Z",
+                "media": [
+                    {
+                        "url": "https://ccrma.stanford.edu/~jos/mp3/bachfugue.mp3",
+                        "type": "audio/mp3",
+                        "role": "summary"
+                    }
+                ]
+            }
