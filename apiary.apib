@@ -22,20 +22,14 @@ Lstn provides audio representations of articles from the web. Here's a typical A
 
 A publisher needs to register with Lstn to obtain an authentication token. At this time at publisher can only fetch their own articles.
 
-## Articles [/publishers/{publisher_id}/articles/{article_id}]
+## Article [/publisher/{publisher_id}/articles/{article_id}]
+
+### Retrieve An Article [GET]
 
 + Parameters
 
     + publisher_id: `the-publisher-id` (string) - The Lstn-chosen publisher identifier.
     + article_id: `96bd704-a-news-article` (string) - The publisher-chosen article identifier.
-
-### Retrieve Article [GET]
-
-+ Request (application/json)
-
-    + Headers
-    
-            Authorization: Bearer 9a7a52a3e8efc2baa12ba2f76bb0e87eccbe26b1
 
 + Response 200 (application/json)
 
@@ -112,18 +106,20 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
                 "message": "The article could not be processed"
             }
 
-## Demo App Articles [/demo/articles/{?limit}]
+## Articles Collection [/publisher/{publisher_id}/articles/{?page}{?per_page}{?sort_by}]
 
 + Parameters
-
-    + limit: 100 (number) - The number of recent articles to retrieve.
+    + publisher_id: `the-publisher-id` (string) - The Lstn-chosen publisher identifier.
+    + page: 1 (number) - The page of articles to be returned
+    + per_page: 10 (number) - The number of articles to be return per page
+    + sort_by: title (string) - The field to sort by
  
-### Retrieve Latest Articles [GET]
+### Retrieve All Articles [GET]
 
 + Request (application/json)
 
     + Headers
-    
+
             Authorization: Bearer 9a7a52a3e8efc2baa12ba2f76bb0e87eccbe26b1
 
 + Response 200 (application/json)
@@ -132,13 +128,25 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     
             [
                 {
-                    "id": "12345",
-                    "publisher_id": "lstn",
+                    "id": "96bd704-a-news-article",
+                    "publisher_id": "the-publisher-id",
                     "url": "https://publisher.com/.../96bd704-a-news-article.html",
                     "title": "A News Article",
                     "author": "Jane Doe",
                     "summary": "Lorem ipsum dolor [...]",
                     "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
-                    "published_at": "2000-01-01T00:00:000Z"
+                    "published_at": "2000-01-01T00:00:000Z",
+                    "media": [
+                        {
+                            "url": "https://cdn.lstn.ltd/.../96bd704-a-news-article.mp3",
+                            "type": "audio/mp3",
+                            "role": "summary"
+                        },
+                        {
+                            "url": "https://cdn.lstn.ltd/.../96bd704-a-news-article.m3u8",
+                            "type": "application/x-mpegurl",
+                            "role": "summary"
+                        }
+                    ]
                 }
             ]
