@@ -41,13 +41,16 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     
             {
                 "id": "96bd704-a-news-article",
-                "publisher_id": "the-publisher-id",
                 "url": "https://publisher.com/.../96bd704-a-news-article.html",
                 "title": "A News Article",
-                "author": "Jane Doe",
+                "author": "An Author",
                 "summary": "Lorem ipsum dolor [...]",
                 "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
                 "published_at": "2000-01-01T00:00:000Z",
+                "publisher": {
+                    "id": "the-publisher-id",
+                    "name": "A Publisher"
+                },
                 "media": [
                     {
                         "url": "https://cdn.lstn.ltd/.../96bd704-a-news-article.mp3",
@@ -129,13 +132,16 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
             [
                 {
                     "id": "96bd704-a-news-article",
-                    "publisher_id": "the-publisher-id",
                     "url": "https://publisher.com/.../96bd704-a-news-article.html",
                     "title": "A News Article",
-                    "author": "Jane Doe",
+                    "author": "An Author",
                     "summary": "Lorem ipsum dolor [...]",
                     "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
                     "published_at": "2000-01-01T00:00:000Z",
+                    "publisher": {
+                        "id": "the-publisher-id",
+                        "name": "A Publisher"
+                    },
                     "media": [
                         {
                             "url": "https://cdn.lstn.ltd/.../96bd704-a-news-article.mp3",
@@ -171,6 +177,10 @@ This endpoint is just around while the SDK is migrated.
                 "summary": "Lorem ipsum dolor [...]",
                 "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
                 "published_at": "2000-01-01T00:00:000Z",
+                "publisher": {
+                    "id": "the-publisher-id",
+                    "name": "A Publisher"
+                },
                 "media": [
                     {
                         "url": "https://ccrma.stanford.edu/~jos/mp3/bachfugue.mp3",
