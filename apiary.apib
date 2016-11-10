@@ -1,26 +1,9 @@
 FORMAT: 1A
-HOST: http://api.lstn.ltd/v1/
+HOST: http://api.lstn.ltd/v1
 
 # Lstn
 
-Lstn provides audio representations of articles from the web. Here's a typical API flow:
-
-- client requests an article by providing an article `id`
-- backend responds with `HTTP 202` 
-
-*meanwhile...*
-
-- backend fetches full text and metadata of the article (via direct publisher connection, or scraping)
-- backend generates an audio representation of the article (via Watson or similar)
-- backend transcodes the audio representation as needed (eg. to HLS for iOS)
-- backend stores the audio file(s) on a CDN
-
-*later...*
-
-- client requests the article again
-- backend responds immediately with the article and its audio representation(s)
-
-A publisher needs to register with Lstn to obtain an authentication token. At this time at publisher can only fetch their own articles.
+Lstn provides audio representations of articles from the web. A publisher needs to register with Lstn to obtain an authentication token. At this time at publisher can only fetch their own articles.
 
 ## Article [/publisher/{publisher_id}/articles/{article_id}]
 
@@ -65,17 +48,6 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
                 ]
             }
 
-+ Response 202 (application/json)
-
-    Returned when an audio representation has not yet been generated. The client must try again later.
-    
-    + Body
-    
-            {
-                "code": 10,
-                "message": "The article is being processed"
-            }
-
 + Response 400 (application/json)
 
     Returned when the authentication token is not known.
@@ -84,7 +56,7 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     
             {
                 "code": 20,
-                "message": "The publisher was not recognised"
+                "message": "The authentication token was not recognised"
             }
             
 + Response 404 (application/json)
@@ -106,7 +78,7 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
     
             {
                 "code": 40,
-                "message": "The article could not be processed"
+                "message": "An error occured when retrieving the article"
             }
 
 ## Articles Collection [/publisher/{publisher_id}/articles/{?page}{?per_page}{?sort_by}]
@@ -159,7 +131,7 @@ A publisher needs to register with Lstn to obtain an authentication token. At th
 
 ## Content {Legacy} [/content/{?source}]
 
-This endpoint is just around while the SDK is migrated.
+{Legacy} This endpoint is just around while the SDK is migrated.
 
 + Parameters
     + source: `the-guardian-uk` (string) - The News API source ID
@@ -173,7 +145,7 @@ This endpoint is just around while the SDK is migrated.
             {
                 "url": "https://publisher.com/.../96bd704-a-news-article.html",
                 "title": "A News Article",
-                "author": "Jane Doe",
+                "author": "An Author",
                 "summary": "Lorem ipsum dolor [...]",
                 "body": "Lorem ipsum dolor sit amet, ei est sumo vitae [...]",
                 "published_at": "2000-01-01T00:00:000Z",
